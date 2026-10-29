@@ -30,6 +30,8 @@ jobs:
   image:
     name: Build image
     needs: ci
+    # Off until the server is set up: add the PUBLIC_URL repository variable (deploy/README.md, step 5) to turn releases on.
+    if: vars.PUBLIC_URL != ''
     runs-on: ubuntu-24.04
     outputs:
       image: ${{ steps.name.outputs.image }}
