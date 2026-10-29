@@ -1,0 +1,24 @@
+node_modules/
+dist/
+.output/
+.tanstack/
+src/routeTree.gen.ts
+*.log
+
+# Local data: uploaded images, backups, database dumps
+uploads/
+.backup/
+*.dump
+
+# Secrets: never commit real settings or keys
+.env
+.env.*
+!.env.example
+deploy/.env
+nepalshop-deploy
+nepalshop-deploy.pub
+*.pem
+
+# Editor and assistant local settings
+.claude/settings.local.json
+.DS_Store

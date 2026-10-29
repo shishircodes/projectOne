@@ -1,0 +1,24 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "nepalshop",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["--bun", "vite", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "nepalshop-prod",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["server.ts"],
+      "env": { "NODE_ENV": "production", "TRUST_PROXY": "true" },
+      "port": 3000
+    },
+    {
+      "name": "mobile-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=apps/mobile", "web"],
+      "port": 8081
+    }
+  ]
+}

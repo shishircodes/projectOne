@@ -1,0 +1,75 @@
+# Production stack on one server: Caddy (HTTPS) → app (Bun) → Postgres, plus nightly backups.
+# Lives in /srv/nepalshop on the server; the deploy workflow copies this folder there on every release.
+# Secrets and settings come from /srv/nepalshop/.env (created once by setup-server.sh, never committed).
+
+name: nepalshop
+
+services:
+  app:
+    image: ${APP_IMAGE:?set by deploy.sh}
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      TRUST_PROXY: "true"
+      DATABASE_URL: postgres://nepalshop:${POSTGRES_PASSWORD}@db:5432/nepalshop
+      UPLOAD_DIR: /app/uploads
+    volumes:
+      - uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    # Not published: only Caddy (same network) reaches it.
+    expose: ["3000"]
+    logging: { driver: json-file, options: { max-size: "20m", max-file: "5" } }
+
+  db:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nepalshop
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set in .env}
+      POSTGRES_DB: nepalshop
+    # Postgres 18 images keep data under /var/lib/postgresql/<version>, so mount the parent.
+    volumes:
+      - pgdata:/var/lib/postgresql
+    # Modest settings for a 4-8 GB server shared with the app. Never published to the internet.
+    command: >
+      postgres
+        -c shared_buffers=${PG_SHARED_BUFFERS:-512MB}
+        -c effective_cache_size=${PG_EFFECTIVE_CACHE:-2GB}
+        -c work_mem=8MB
+        -c maintenance_work_mem=128MB
+        -c max_connections=60
+        -c log_min_duration_statement=500
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nepalshop -d nepalshop"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    shm_size: 256mb
+    logging: { driver: json-file, options: { max-size: "20m", max-file: "5" } }
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:?set in .env}
+      ACME_EMAIL: ${ACME_EMAIL:?set in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [app]
+    logging: { driver: json-file, options: { max-size: "20m", max-file: "5" } }
+
+volumes:
+  pgdata:
+  uploads:
+  caddy_data:
+  caddy_config:

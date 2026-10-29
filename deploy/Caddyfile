@@ -1,0 +1,40 @@
+# HTTPS for the platform, store subdomains (<slug>.BASE_DOMAIN) and stores' custom domains.
+# Certificates come from Let's Encrypt automatically. For store hosts they're issued on the first visit, but only
+# after the app confirms it serves that host (/internal/tls-allowed), so nobody can make us request random certs.
+{
+	email {$ACME_EMAIL}
+	on_demand_tls {
+		ask http://app:3000/internal/tls-allowed
+	}
+}
+
+(app) {
+	encode zstd gzip
+	reverse_proxy app:3000 {
+		# Server-Sent Events (/api/v1/events): pass bytes through as they come.
+		flush_interval -1
+	}
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+}
+
+{$APP_DOMAIN} {
+	import app
+}
+
+# Any other host: store subdomains and custom domains.
+https:// {
+	tls {
+		on_demand
+	}
+	import app
+}
+
+# Plain HTTP on any host goes to HTTPS (Let's Encrypt's HTTP challenge is still answered first).
+http:// {
+	redir https://{host}{uri} 308
+}

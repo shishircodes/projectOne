@@ -1,0 +1,10 @@
+# Normalise line endings; scripts and server config must stay LF to run on Linux.
+* text=auto eol=lf
+*.sh text eol=lf
+Caddyfile text eol=lf
+*.png binary
+*.jpg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.woff2 binary

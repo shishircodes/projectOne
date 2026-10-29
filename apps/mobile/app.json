@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "NepalShop Seller",
+    "slug": "nepalshop-seller",
+    "scheme": "nepalshop",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.nepalshop.seller",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Take photos of your products.",
+        "NSPhotoLibraryUsageDescription": "Choose product photos from your library."
+      }
+    },
+    "android": {
+      "package": "app.nepalshop.seller",
+      "adaptiveIcon": {
+        "backgroundColor": "#5464F5",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-image",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Take photos of your products.",
+          "photosPermission": "Choose product photos from your library."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}

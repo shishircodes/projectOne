@@ -1,0 +1,50 @@
+{
+  "name": "nepalshop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --bun vite dev",
+    "build": "bun --bun vite build",
+    "start": "NODE_ENV=production bun run server.ts",
+    "migrate": "bun scripts/migrate.ts",
+    "seed": "bun scripts/seed.ts",
+    "seed:showcase": "bun scripts/seed-showcase.ts",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "bun test",
+    "palette": "bun scripts/palette.ts",
+    "create-admin": "bun scripts/create-admin.ts"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.9.0",
+    "@fontsource-variable/bricolage-grotesque": "5",
+    "@fontsource-variable/fraunces": "5",
+    "@number-flow/react": "^0.6.2",
+    "@tanstack/react-router": "^1.170.44",
+    "@tanstack/react-start": "^1.169.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
+    "hono": "^4.13.14",
+    "lucide-react": "^1.57.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "recharts": "^3.10.1",
+    "sonner": "^2.0.8",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@tanstack/router-plugin": "^1.168.46",
+    "@types/bun": "^1.4.3",
+    "@types/culori": "^4.0.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "apca-w3": "^0.1.9",
+    "culori": "^4.0.2",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
+  }
+}
