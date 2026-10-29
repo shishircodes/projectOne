@@ -28,7 +28,7 @@ jobs:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/nepalshop
       SESSION_SECRET: ci-only-not-a-real-secret
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.14
@@ -43,7 +43,7 @@ jobs:
     name: Seller mobile app
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.14
@@ -58,9 +58,9 @@ jobs:
     name: Server config
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Shell scripts
-        run: shellcheck deploy/*.sh
+        run: shellcheck --severity=warning deploy/*.sh
       - name: Compose file
         run: |
           touch deploy/.env

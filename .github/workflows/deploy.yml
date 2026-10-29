@@ -36,7 +36,7 @@ jobs:
     outputs:
       image: ${{ steps.name.outputs.image }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - id: name
         run: echo "image=ghcr.io/${GITHUB_REPOSITORY,,}:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
       - uses: docker/setup-buildx-action@v3
@@ -68,7 +68,7 @@ jobs:
       TARGET: deploy@${{ secrets.DEPLOY_HOST }}
       IMAGE: ${{ needs.image.outputs.image }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: SSH key
         env:
           SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}

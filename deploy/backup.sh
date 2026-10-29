@@ -4,10 +4,11 @@
 # A backup on the same server doesn't survive losing the server, so set the off-site target.
 # Restore: see the "Backups" section in deploy/README.md.
 set -euo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit 1
 mkdir -p backups
 
-env_value() { grep -E "^$1=" .env 2>/dev/null | tail -1 | cut -d= -f2- | sed -e 's/^"//' -e 's/"$//'; }
+# A setting from .env, or empty when it's missing (never fails, so `set -e` doesn't stop the backup).
+env_value() { { grep -E "^$1=" .env 2>/dev/null || true; } | tail -1 | cut -d= -f2- | sed -e 's/^"//' -e 's/"$//'; }
 if [ ! -s .current-image ]; then echo "$(date -u +%FT%TZ) skipped: nothing deployed yet"; exit 0; fi
 APP_IMAGE="$(cat .current-image)"
 export APP_IMAGE
