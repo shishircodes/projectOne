@@ -75,7 +75,7 @@ Push to `main` (or run **Actions → Deploy → Run workflow**). When it's green
 
 ```bash
 ssh root@SERVER_IP
-cd /srv/nepalshop && export APP_IMAGE=$(cat .current-image)
+cd /srv/nepalshop
 docker compose exec app bun scripts/create-admin.ts --email you@example.com --name "Your Name"
 ```
 
@@ -83,7 +83,7 @@ It prints a one-time password. Sign in at `https://APP_DOMAIN/login` and choose 
 
 ## Day to day
 
-Run these on the server in `/srv/nepalshop`, after `export APP_IMAGE=$(cat .current-image)`:
+Run these on the server in `/srv/nepalshop` (each release records its image in `.env`, so plain `docker compose` commands work):
 
 | Task | Command |
 |---|---|
